@@ -79,7 +79,7 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ./docker-daemon.sh ${{ secrets.SSH_USER }}@${{ secrets.IP_ADDRESS }}:/home/${{ secrets.SSH_USER }}/espocrm
+          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ./docker-daemon.sh ./docker-entrypoint.sh ${{ secrets.SSH_USER }}@${{ secrets.IP_ADDRESS }}:/home/${{ secrets.SSH_USER }}/espocrm
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.IP_ADDRESS }} << 'ENDSSH'
             cd /home/${{ secrets.SSH_USER }}/espocrm
             source .env
