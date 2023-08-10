@@ -105,6 +105,7 @@ RUN set -ex; \
 
 COPY ./docker-*.sh  /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/docker-entrypoint.sh"]
+RUN ["chmod", "+x", "/usr/local/bin/docker-daemon.sh"]
 
 ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
 
