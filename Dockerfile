@@ -104,7 +104,8 @@ RUN set -ex; \
     chown -R www-data:www-data /usr/src/espocrm
 
 COPY ./docker-*.sh  /usr/local/bin/
+RUN ["chmod", "+x", "/usr/local/bin/docker-entrypoint.sh"]
 
-ENTRYPOINT [ "docker-entrypoint.sh" ]
+ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
 
 CMD ["apache2-foreground"]
