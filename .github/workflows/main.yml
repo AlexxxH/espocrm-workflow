@@ -17,6 +17,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer:v2
+          ini-values: memory_limit=1024M
+      - name: Composer install
+        run: composer install
+      - name: NPM install
+        run: npm install
       - name: Add environment variables to .env
         env:
           ESPOCRM_DATABASE_PASSWORD: ${{ secrets.ESPOCRM_DATABASE_PASSWORD }}
