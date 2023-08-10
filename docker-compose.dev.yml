@@ -24,6 +24,8 @@ services:
       - 8080:80
     volumes:
      - espocrm:/var/www/html
+    depends_on:
+      - mysql
 
   espocrm-daemon:
     container_name: espocrm-daemon

@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+
+  mysql:
+    container_name: mysql
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: "${ESPOCRM_DATABASE_PASSWORD}"
+    volumes:
+      - mysql:/var/lib/mysql
+
+  espocrm:
+    container_name: espocrm
+    build:
+      context: .
+      dockerfile: Dockerfile
+      cache_from:
+        - "${ESPOCRM_IMAGE}"
+    image: "${ESPOCRM_IMAGE}"
+    env_file: .env
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+     - espocrm:/var/www/html
+    depends_on:
+      - mysql
+
+  espocrm-daemon:
+    container_name: espocrm-daemon
+    build:
+      context: .
+      dockerfile: Dockerfile
+      cache_from:
+        - "${ESPOCRM_DAEMON_IMAGE}"
+    image: "${ESPOCRM_DAEMON_IMAGE}"
+    volumes:
+     - espocrm:/var/www/html
+    restart: always
+    entrypoint: docker-daemon.sh
+
+volumes:
+  mysql:
+  espocrm:
