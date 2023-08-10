@@ -27,6 +27,8 @@ jobs:
         run: composer install
       - name: NPM install
         run: npm ci
+      - name: Build
+        run: grunt
       - name: Add environment variables to .env
         env:
           ESPOCRM_DATABASE_PASSWORD: ${{ secrets.ESPOCRM_DATABASE_PASSWORD }}
