@@ -56,16 +56,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Add environment variables to .env
-        env:
-          ESPOCRM_DATABASE_PASSWORD: ${{ secrets.ESPOCRM_DATABASE_PASSWORD }}
-          ESPOCRM_ADMIN_USERNAME: ${{ secrets.ESPOCRM_ADMIN_USERNAME }}
-          ESPOCRM_ADMIN_PASSWORD: ${{ secrets.ESPOCRM_ADMIN_PASSWORD }}
-          ESPOCRM_SITE_URL: ${{ secrets.ESPOCRM_SITE_URL }}
         run: |
-          echo ESPOCRM_DATABASE_PASSWORD="'$ESPOCRM_DATABASE_PASSWORD'" >> .env
-          echo ESPOCRM_ADMIN_USERNAME="'$ESPOCRM_ADMIN_USERNAME'" >> .env
-          echo ESPOCRM_ADMIN_PASSWORD="'$ESPOCRM_ADMIN_PASSWORD'" >> .env
-          echo ESPOCRM_SITE_URL="'$ESPOCRM_SITE_URL'" >> .env
+          echo ESPOCRM_DATABASE_PASSWORD=${{ secrets.ESPOCRM_DATABASE_PASSWORD }} >> .env
+          echo ESPOCRM_ADMIN_USERNAME=${{ secrets.ESPOCRM_ADMIN_USERNAME }} >> .env
+          echo ESPOCRM_ADMIN_PASSWORD=${{ secrets.ESPOCRM_ADMIN_PASSWORD }} >> .env
+          echo ESPOCRM_SITE_URL=${{ secrets.ESPOCRM_SITE_URL }} >> .env
+          echo ESPOCRM_IMAGE=${{ env.ESPOCRM_IMAGE }} >> .env
+          echo ESPOCRM_DAEMON_IMAGE=${{ env.ESPOCRM_DAEMON_IMAGE }} >> .env
+          echo NAMESPACE=${{ secrets.NAMESPACE }} >> .env
+          echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env
+          echo SSH_USER=${{ secrets.SSH_USER }} >> .env
       - name: Add the private SSH key to the ssh-agent
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -74,14 +74,14 @@ jobs:
           mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-add - <<< "$PRIVATE_KEY"
+          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
       - name: Build and deploy images on DigitalOcean
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{ secrets.SSH_USER }}@${{ secrets.IP_ADDRESS }}:/root/espocrm
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.IP_ADDRESS }} << 'ENDSSH'
-            cd /root/espocrm
+          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml $SSH_USER@${{ secrets.IP_ADDRESS }}:/home/$SSH_USER/espocrm
+          ssh -o StrictHostKeyChecking=no $SSH_USER@${{ secrets.IP_ADDRESS }} << 'ENDSSH'
+            cd /home/$SSH_USER/espocrm
             source .env
             docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
             docker pull $ESPOCRM_IMAGE
