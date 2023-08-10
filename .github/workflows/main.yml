@@ -74,14 +74,14 @@ jobs:
           mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
+          ssh-add - <<< "$PRIVATE_KEY"
       - name: Build and deploy images on DigitalOcean
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml $SSH_USER@${{ secrets.IP_ADDRESS }}:/home/$SSH_USER/espocrm
-          ssh -o StrictHostKeyChecking=no $SSH_USER@${{ secrets.IP_ADDRESS }} << 'ENDSSH'
-            cd /home/$SSH_USER/espocrm
+          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{ secrets.SSH_USER }}@${{ secrets.IP_ADDRESS }}:/home/${{ secrets.SSH_USER }}/espocrm
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.IP_ADDRESS }} << 'ENDSSH'
+            cd /home/${{ secrets.SSH_USER }}/espocrm
             source .env
             docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
             docker pull $ESPOCRM_IMAGE
