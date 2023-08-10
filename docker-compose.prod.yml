@@ -14,6 +14,7 @@ services:
       - mysql:/var/lib/mysql
 
   espocrm:
+    container_name: espocrm
     image: "${ESPOCRM_IMAGE}"
     env_file: .env
     restart: always
@@ -31,6 +32,8 @@ services:
      - espocrm:/var/www/html
     restart: always
     entrypoint: docker-daemon.sh
+    depends_on:
+      - espocrm
 
 volumes:
   mysql:
