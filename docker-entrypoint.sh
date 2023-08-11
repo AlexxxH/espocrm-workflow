@@ -461,6 +461,10 @@ case $installationType in
 esac
 
 applyConfigEnvironments
+
+# Migrate database schema
+php rebuild.php
+
 # ------------------------- END -------------------------------------
 
 exec "$@"
