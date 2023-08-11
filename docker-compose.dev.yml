@@ -36,6 +36,8 @@ services:
      - espocrm:/var/www/html
     restart: always
     entrypoint: docker-daemon.sh
+    depends_on:
+      - espocrm
 
 volumes:
   mysql:

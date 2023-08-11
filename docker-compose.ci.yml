@@ -18,8 +18,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      cache_from:
-        - "${ESPOCRM_IMAGE}"
     image: "${ESPOCRM_IMAGE}"
     env_file: .env
     restart: always
@@ -35,8 +33,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      cache_from:
-        - "${ESPOCRM_DAEMON_IMAGE}"
     image: "${ESPOCRM_DAEMON_IMAGE}"
     volumes:
      - espocrm:/var/www/html
