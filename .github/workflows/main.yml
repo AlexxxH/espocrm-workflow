@@ -48,10 +48,6 @@ jobs:
         run: echo ${PERSONAL_ACCESS_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      - name: Pull images
-        run: |
-          docker pull ${{ env.ESPOCRM_IMAGE }} || true
-          docker pull ${{ env.ESPOCRM_DAEMON_IMAGE }} || true
       - name: Build images
         run: |
           docker compose -f docker-compose.ci.yml build --no-cache
