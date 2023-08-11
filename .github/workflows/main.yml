@@ -11,9 +11,32 @@ env:
 
 jobs:
 
+  test-unit:
+    name: Run Unit Tests on PHP ${{ matrix.php-versions }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['8.0', '8.1', '8.2']
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup PHP with Composer
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        tools: composer:v2
+        ini-values: memory_limit=1024M
+    - name: Composer install
+      run: composer install
+    - name: Static analysis
+      run: vendor/bin/phpstan
+    - name: Unit testing
+      run: vendor/bin/phpunit tests/unit
+
   build:
     name: Build Docker Images
     runs-on: ubuntu-latest
+    needs: 
+      - test-unit
     steps:
       - name: Checkout
         uses: actions/checkout@v3
