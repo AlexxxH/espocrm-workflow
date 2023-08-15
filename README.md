@@ -89,7 +89,7 @@ The project uses [Github secrets](https://docs.github.com/en/rest/actions/secret
 
 ### Production
 
-To start the workflow, push changes to the ```7.5.4-dev``` branch:
+To start the workflow, push changes to the ```master``` branch:
 
 ```bash
 git push

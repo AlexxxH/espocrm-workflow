@@ -3,7 +3,7 @@ name: Continuous Integration and Delivery
 on:
   push:
     branches:
-      - 7.5.4-dev
+      - master
 
 env:
   ESPOCRM_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/espocrm
@@ -19,8 +19,6 @@ jobs:
         php-versions: ['8.0', '8.1', '8.2']
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: '7.5.4-dev'
       - name: Setup PHP with Composer
         uses: shivammathur/setup-php@v2
         with:
@@ -59,8 +57,6 @@ jobs:
         php-versions: ['8.0', '8.1', '8.2']
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: '7.5.4-dev'
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -91,8 +87,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: '7.5.4-dev'
       - name: Setup PHP with Composer
         uses: shivammathur/setup-php@v2
         with:
@@ -139,8 +133,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: '7.5.4-dev'
       - name: Add environment variables to .env
         run: |
           echo ESPOCRM_DATABASE_PASSWORD=${{ secrets.ESPOCRM_DATABASE_PASSWORD }} >> .env
