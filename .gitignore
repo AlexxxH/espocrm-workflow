@@ -6,6 +6,11 @@
 /data/config.php
 /data/config-internal.php
 /data/tmp/*
+
+/data/nginx/*
+!/data/nginx/espocrm.conf
+!/data/nginx/conf.d/
+
 /build
 /node_modules
 /npm-debug.log

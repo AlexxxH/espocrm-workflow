@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.1-fpm
 
 # Install php libs
 RUN set -ex; \
@@ -91,8 +91,6 @@ RUN { \
 	echo 'date.timezone=UTC'; \
 } > ${PHP_INI_DIR}/conf.d/espocrm.ini
 
-RUN a2enmod rewrite;
-
 ENV ESPOCRM_VERSION 7.5.4
 ENV ESPOCRM_SHA256 8e18b15d1e657ba6939dd6012d4283de3c4eb24a994eb189820077e5a85518a3
 
@@ -109,4 +107,4 @@ RUN ["chmod", "+x", "/usr/local/bin/docker-daemon.sh"]
 
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]
