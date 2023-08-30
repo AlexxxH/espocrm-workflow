@@ -34,3 +34,4 @@ client/lib/*
 client/modules/crm/lib/*
 
 .env
+.env.prod
