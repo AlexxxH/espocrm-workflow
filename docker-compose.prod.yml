@@ -25,10 +25,10 @@ services:
     environment:
       NGINX_HOST: "${DOMAIN_NAME}"
     volumes:
-      - ./data/nginx/conf.d/:/etc/nginx/templates
+      - /home/${SSH_USER}/espocrm/data/nginx/conf.d/:/etc/nginx/templates
       - espocrm:/var/www/html
-      - ./data/nginx/espocrm.conf:/etc/nginx/espocrm.conf
-      - ./data/nginx/logs:/var/log/nginx
+      - /home/${SSH_USER}/espocrm/data/nginx/espocrm.conf:/etc/nginx/espocrm.conf
+      - /home/${SSH_USER}/espocrm/data/nginx/logs:/var/log/nginx
     restart: always
     depends_on:
       - espocrm
